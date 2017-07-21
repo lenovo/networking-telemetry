@@ -13,8 +13,11 @@ mkdir lenovo-ganglia
 cd lenovo-ganglia
 mkdir ganglia-src
 cd ganglia-src
+
 wget  https://sourceforge.net/projects/ganglia/files/ganglia-web/3.7.2/ganglia-web-3.7.2.tar.gz
+
 wget  https://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz
+
 cd ..
 copy the file install.sh from the ganglia directory of the plugin to this directory
 sudo ./install.sh install
