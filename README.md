@@ -1,12 +1,12 @@
-Plugins for Lenovo CNOS Telemetry
+#Plugins for Lenovo CNOS Telemetry
 
 Introduction
-
+---
 Network telemetry is used by organizations to monitor their network devices (e.g. switches,routers) and provide this data to software controllers to  analyze the data for condition of the network. Network Telemetry Agents running on Lenovo CNOS monitor the buffer statistics and network interface counters on the switch. Extenal Montoring and Analytical tools like Ganglia and Splunk can be used to monitor and analyse the telemetry agent data pulled from switches running Lenovo CNOS. The plugins to do capacity planning and congestion detection are presented here.
 
 Preparation for running the Ganglia plugins
-
-Server Installation
+---
+**Server Installation**
 
 Install  Ubuntu latest stable release 16.04 on a server machine and do the following
 mkdir lenovo-ganglia
@@ -23,7 +23,7 @@ copy the file install.sh from the ganglia directory of the plugin to this direct
 sudo ./install.sh install
 Copy the contents of te plugin directories into the server
 
-Lenovo Switch Configuration
+**Lenovo Switch Configuration**
 
 Execute the following command on the Lenovo switch
 G8272#config
@@ -37,5 +37,5 @@ G8272(config)#exit
 Copy the contents of te plugin directories into the server
 
 Running the plugins
-
+---
 The plugin has a sample conf.py file.
