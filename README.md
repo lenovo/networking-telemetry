@@ -26,16 +26,21 @@ sudo ./install.sh install
 
 Execute the following command on the Lenovo switch
 1. G8272#config
+
 Enters into the configuration mode
 
 2. G8272(config)#feature telemetry
-  Enables telemetry feature on the switch
+
+Enables telemetry feature on the switch
 3. G8272(config)#no feature restApi
-  Disable rest server on the switch
+
+Disable rest server on the switch
 4. G8272(config)#feature restApi http
-  Enable rest server in http mode on port 8090
+
+Enable rest server in http mode on port 8090
 5. G8272(config)#exit
-  Exit from the configuration mode.
+
+Exit from the configuration mode.
   
 Copy the contents of the plugin directories into the server
 
