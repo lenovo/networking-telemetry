@@ -32,17 +32,20 @@ Enters into the configuration mode
 2. G8272(config)#feature telemetry
 
 Enables telemetry feature on the switch
+
 3. G8272(config)#no feature restApi
 
 Disable rest server on the switch
+
 4. G8272(config)#feature restApi http
 
 Enable rest server in http mode on port 8090
+
 5. G8272(config)#exit
 
 Exit from the configuration mode.
   
-Copy the contents of the plugin directories into the server
+Copy the contents of the plugin directories into the server.
 
 Running the plugins
 ---
