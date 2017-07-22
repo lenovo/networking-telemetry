@@ -16,8 +16,9 @@ import json
 from gmetric import Gmetric
 from pprint import pprint
 import conf
-from receiver import LogHandler
-from generators import Bst_congtestion_metrics_generator
+from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
+from cloghandler import ConcurrentRotatingFileHandler
+#from receiver import LogHandler
 #import receiver
 
 _Worker_Thread = None
@@ -36,6 +37,35 @@ logger.addHandler(ch)
 logger.addHandler(fh)
 '''
 ''' use concurrency support, rationtion support logger'''
+
+class LogHandler():
+    """log wrapper class for CGI log """
+    def __init__(self, logfile, log_size_limit, log_rotate_num, log_level):
+        self.logger = logging.getLogger()
+        try:
+            self.rotateHandler = ConcurrentRotatingFileHandler(logfile, "a", log_size_limit, log_rotate_num)
+        except Exception, e:
+            print_result('INTERNAL_ERR')
+        formatter = logging.Formatter('%(asctime)-25s %(funcName)-25s %(levelname)-6s %(message)s')
+        self.rotateHandler.setFormatter(formatter)
+        self.logger.addHandler(self.rotateHandler)
+
+        self.serverhandler = logging.handlers.SysLogHandler(address = ('10.240.176.203',514))
+        self.serverhandler.setFormatter(formatter)
+        self.logger.addHandler(self.serverhandler)
+
+        if log_level == "DEBUG":
+            self.logger.setLevel(DEBUG)
+        elif log_level =="INFO":
+            self.logger.setLevel(INFO)
+        elif log_level =="WARNING":
+            self.logger.setLevel(WARNING)
+        elif log_level =="ERROR":
+            self.logger.setLevel(ERROR)
+        elif log_level =="CRITICAL":
+            self.logger.setLevel(CRITICAL)
+        else:
+            self.logger.setLevel(INFO)
 
 class UpdateMetricThread(threading.Thread):
     def __init__(self, params):
