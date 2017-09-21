@@ -136,8 +136,8 @@ class UpdateMetricThread(threading.Thread):
                 for j in range(len(data_list)):
                      data = data_list[j]
                      arr = data['data']
-                     pg = arr[0]
-                     val = val + (int) (arr[1])
+                     pg = arr[0][0]
+                     val = val + (int) (arr[0][1])
                 m['value'] = (int) (val/len(data_list))
                 m['description'] = 'Ingress port priority group'
                 m['groups'] = 'Ingress Port Priority Group' 
@@ -171,8 +171,8 @@ class UpdateMetricThread(threading.Thread):
                 for j in range(len(data_list)):
                      data = data_list[j]
                      arr = data['data']
-                     service_pool = arr[0]
-                     val = val + (int) (arr[1])
+                     service_pool = arr[0][0]
+                     val = val + (int) (arr[0][1])
                 m['value'] = (int) (val/len(data_list))
                 m['description'] = 'Egress port service pool'
                 m['groups'] = 'Egress Port Service Pool' 
