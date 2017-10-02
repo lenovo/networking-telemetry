@@ -15,7 +15,8 @@ Install  Ubuntu latest stable release 16.04 on a server machine and do the follo
 2. cd to ganglia-src
 3. sudo bash ./install.sh install
 4. Execute the following commands
-   sudo gmond
+   sudo gmond 
+   
    sudo gmetad  
 5. Open a browser and http://ipaddress/ganglia.
 
