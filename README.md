@@ -45,7 +45,9 @@ Enable rest server in http mode on port 8090
 Exit from the configuration mode.
 
 6. Enabling the BST feature in cnos switch 
-Perform PUT nos/api/cfg/telemetry/bst/feature
+
+PUT http://ipaddress:8090/nos/api/cfg/telemetry/bst/feature
+
 Place the following json body as input to the above rest api
 {
  "collection-interval": 60, "send-async-reports": 0, "send-snapshot-on-trigger": 1, "trigger-rate-limit": 1, "async-full-report": 0, "trigger-rate-limit-interval": 10, "bst-enable": 1
