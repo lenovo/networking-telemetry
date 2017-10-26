@@ -2,15 +2,17 @@ Plugins for Lenovo CNOS Telemetry
 ===
 Introduction
 ---
-Network telemetry is used by organizations to monitor their network devices (e.g. switches,routers) and provide this data to software controllers to  analyze the data for condition of the network. Network Telemetry Agents running on Lenovo CNOS monitor the buffer statistics and network interface counters on the switch. Extenal Montoring and Analytical tools like Ganglia and Splunk can be used to monitor and analyse the telemetry agent data pulled from switches running Lenovo CNOS. The plugins to do capacity planning and congestion detection are presented here.
+Network telemetry is used by organizations to monitor their network devices (e.g. switches,routers) and provide this data to software controllers to  analyze the data for condition of the network. Network Telemetry Agents running on Lenovo CNOS monitor the buffer statistics and network interface counters on the switch. Extenal Montoring and Analytical tools like Ganglia and Splunk can be used to monitor and analyse the telemetry agent data pulled from switches running Lenovo CNOS. Ganglia plugins for  capacity planning and congestion detection are presented here.
 
 Preparation for running the Ganglia plugins
 ---
 **Server Installation**
 
-Install  Ubuntu latest stable release 16.04 on a server machine and do the following
 
-1. Untar lenovo-ganglia.tar.gz *(tar zxvf enovo-ganglia.tar.gz).
+Install  Ubuntu latest stable release 16.04 on a server machine.
+Download the files and directories in this plugin to the server.
+
+1. Untar the file lenovo-ganglia.tar.gz *(tar zxvf lenovo-ganglia.tar.gz).
  lenovo-ganglia directory is created with ganglia-src, ganglia-conf and apache-conf 
 2. cd to ganglia-src
 3. sudo bash ./install.sh install
