@@ -1,0 +1,14 @@
+
+Docker compose file template for one Enterprise Server and one Universual Forwarder,
+deploy within the same host OS:
+lenovo-network-telemetry-splunk-all-in-one-1+1.yml  
+
+Docker compose file template for one Enterprise Server and two Universual Forwarder,
+deploy within the same host OS:
+lenovo-network-telemetry-splunk-all-in-one-1+2.yml
+
+Seperate docker compose file template for Enterprise Server and Universual Forwarder,
+deploy within the different or same host:
+lenovo-network-telemetry-splunk-server.yml
+lenovo-network-telemetry-splunk-forwarder.yml
+

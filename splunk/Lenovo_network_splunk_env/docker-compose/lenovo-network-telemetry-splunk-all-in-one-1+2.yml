@@ -1,0 +1,92 @@
+version: '2.0'
+
+volumes:
+  opt-splunk-etc:
+  opt-splunk-var:
+  opt-forwarder-1-etc:
+  opt-forwarder-1-var:
+  opt-forwarder-2-etc:
+  opt-forwarder-2-var:
+  Startup-Order:
+
+services:
+  splunkenterprise:
+    image: splunk/splunk:7.0.3
+    container_name: server
+    hostname: splunkenterprise-docker
+    environment:
+      SPLUNK_START_ARGS: --accept-license --answer-yes
+      SPLUNK_ENABLE_DEPLOY_SERVER: 'true'
+      SPLUNK_ENABLE_LISTEN: 9997
+    volumes:
+      - /data/splunk/opt-splunk-etc:/opt/splunk/etc
+      - /data/splunk/opt-splunk-var:/opt/splunk/var
+      - /data/Startup-Order:/Startup-Order
+
+    command: |
+      /bin/bash -c '
+      rm -fr /Startup-Order/*
+      echo Service splunkenterprise  Start;
+      sleep 10;
+      echo Service splunkenterprise  Up;
+      touch /Startup-Order/splunkenterprise;
+      /sbin/entrypoint.sh start-service'
+
+    ports:
+      - "8000:8000"
+      - "9997:9997"
+
+  forwarder-1:
+    image: ospost/lenovo-splunk-forwarder:7.0.3
+    container_name: forwarder-1
+    hostname: splunkforwarder-1-docker
+    environment:
+      SPLUNK_START_ARGS: --accept-license --answer-yes
+      SPLUNK_FORWARD_SERVER_ARGS: '-method clone'
+      SPLUNK_FORWARD_SERVER: 'splunkenterprise:9997'
+      SPLUNK_DEPLOYMENT_SERVER: 'splunkenterprise:8089'
+      SPLUNK_ENABLE_LISTEN: 10001
+    volumes:
+      - /data/forwarder-1/opt-forwarder-1-etc:/opt/splunk/etc
+      - /data/forwarder-1/opt-forwarder-1-var:/opt/splunk/var
+      - /data/Startup-Order:/Startup-Order
+    command: |
+      /bin/bash -c '
+      while [[ ! -f /Startup-Order/splunkenterprise ]]; do sleep 1; done;
+      echo Service forwarder-1 Start;
+      sleep 10;
+      echo Service forwarder-1 Up;
+      touch /Startup-Order/forwarder-1;
+      /sbin/entrypoint.sh start-service'
+
+    ports:
+      - "10001:10001"
+
+  forwarder-2:
+    image: ospost/lenovo-splunk-forwarder:7.0.3
+    container_name: forwarder-2
+    hostname: splunkforwarder-2-docker
+    environment:
+      SPLUNK_START_ARGS: --accept-license --answer-yes
+      SPLUNK_FORWARD_SERVER_ARGS: '-method clone'
+      SPLUNK_FORWARD_SERVER: 'splunkenterprise:9997'
+      SPLUNK_DEPLOYMENT_SERVER: 'splunkenterprise:8089'
+      SPLUNK_ENABLE_LISTEN: 10002
+    volumes:
+      - /data/forwarder-2/opt-forwarder-2-etc:/opt/splunk/etc
+      - /data/forwarder-2/opt-forwarder-2-var:/opt/splunk/var
+      - /data/Startup-Order:/Startup-Order
+    command: |
+      /bin/bash -c '
+      while [[ ! -f /Startup-Order/splunkenterprise ]]; do sleep 1; done;
+      while [[ ! -f /Startup-Order/forwarder-1 ]]; do sleep 1; done;
+      sleep 10;
+      echo Service forwarder-2 Up;
+      touch /Startup-Order/forwarder-2;
+      /sbin/entrypoint.sh start-service'
+
+    ports:
+      - "10002:10002"
+
+
+

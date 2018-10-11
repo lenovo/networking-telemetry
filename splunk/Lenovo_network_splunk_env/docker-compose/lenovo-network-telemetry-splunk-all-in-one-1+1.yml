@@ -1,0 +1,42 @@
+version: '2.0'
+
+volumes:
+  opt-splunk-etc:
+  opt-splunk-var:
+  opt-forwarder-1-etc:
+  opt-forwarder-1-var:
+
+services:
+  splunkenterprise:
+    image: splunk/splunk:7.0.3
+    container_name: server
+    hostname: splunkenterprise-docker
+    environment:
+      SPLUNK_START_ARGS: --accept-license --answer-yes
+      SPLUNK_ENABLE_DEPLOY_SERVER: 'true'
+      SPLUNK_ENABLE_LISTEN: 9997
+    volumes:
+      - /data/splunk/opt-splunk-etc:/opt/splunk/etc
+      - /data/splunk/opt-splunk-var:/opt/splunk/var
+    ports:
+      - "8000:8000"
+      - "9997:9997"
+
+  forwarder-1:
+    image: ospost/lenovo-splunk-forwarder:7.0.3
+    container_name: forwarder-1
+    hostname: splunkforwarder-1-docker
+    environment:
+      SPLUNK_START_ARGS: --accept-license --answer-yes
+      SPLUNK_FORWARD_SERVER_ARGS: '-method clone'
+      SPLUNK_FORWARD_SERVER: 'splunkenterprise:9997'
+      SPLUNK_DEPLOYMENT_SERVER: 'splunkenterprise:8089'
+      SPLUNK_ENABLE_LISTEN: 10001 
+    volumes:
+      - /data/forwarder-1/opt-forwarder-1-etc:/opt/splunk/etc
+      - /data/forwarder-1/opt-forwarder-1-var:/opt/splunk/var
+    ports:
+      - "10001:10001"
+
+
+
