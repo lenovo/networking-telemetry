@@ -46,7 +46,9 @@ function service_port_check() {
 	# default splunk WEB GUI http service port  	8000		Must	
 	SPLUNK_WEB_PORT=8000
 	# default splunk mangement purpose service port 8089		Optional 
+	SPLUNK_MGMT_PORT=8089
 	# default Splunk server recieving port 		9997		Optional  Not need in Phase 1
+	SPLUNK_REV_PORT_DEF=9997
 
 	HOST_PORT_USED=`netstat -tuln  | grep ^[t,u] | awk '{ print $4 }' | sed  's/:/ /g' | awk '{ print $NF }'`
 
@@ -58,6 +60,20 @@ function service_port_check() {
 			printf "\n"
 			exit 1
 		fi
+		if [ $PORT -eq $SPLUNK_MGMT_PORT ]; then
+			printf "= Port 8089 has been used.  Splunk Enterprise server need 8089 for deployment service"
+			printf "\n"
+			printf "\n"
+			exit 1
+		fi
+		if [ $PORT -eq $SPLUNK_REV_PORT_DEF ]; then
+			printf "= Port 9997 has been used.  Splunk Enterprise server need 9997 to receive data"
+			printf "\n"
+			printf "\n"
+			exit 1
+		fi
+
+
 	done
 }
 
@@ -85,7 +101,7 @@ function splunkenterprise_compose() {
     	printf "        environment: \n"
     	printf "          SPLUNK_START_ARGS: --accept-license --answer-yes \n"
       	printf "          SPLUNK_ENABLE_DEPLOY_SERVER: 'true' \n"
-	#printf "          SPLUNK_ENABLE_LISTEN: 9997 \n"
+	printf "          SPLUNK_ENABLE_LISTEN: 9997 \n"
     	printf "        volumes: \n"
       	printf "          - /data/splunk/opt-splunk-etc:/opt/splunk/etc \n"
         printf "          - /data/splunk/opt-splunk-var:/opt/splunk/var \n"
@@ -94,12 +110,13 @@ function splunkenterprise_compose() {
         printf "          /bin/bash -c '\n"
         printf "          rm -fr /Start-Order/*;\n"
         printf "          echo Service splunkenterprise  Start;\n"
-	printf "          sleep 15;\n"
+	printf "          sleep 25;\n"
         printf "          touch /Startup-Order/splunkenterprise;\n"
         printf "          /sbin/entrypoint.sh start-service'\n"
     	printf "        ports: \n"
 	printf "          - \"8000:8000\" \n"
 	printf "          - \"9997:9997\" \n"
+	printf "          - \"8089:8089\" \n"
 }
 
 
@@ -116,7 +133,7 @@ function forwarder_compose() {
         	printf "          /bin/bash -c '\n"
       		printf "          while [[ ! -f /Startup-Order/splunkenterprise ]]; do sleep 1; done;\n"
         	printf "          echo Service forwarder-1 Start;\n"
-        	printf "          sleep 15;\n"
+        	printf "          sleep 45;\n"
         	printf "          touch /Startup-Order/forwarder-1;\n"
         	printf "          /sbin/entrypoint.sh start-service'\n"
 
@@ -133,7 +150,7 @@ function forwarder_compose() {
       			printf "          while [[ ! -f /Startup-Order/forwarder-%s ]]; do sleep 1; done;\n" "$i"
 		done
         	printf "          echo Service forwarder-%s Start;\n" "$index"
-		let "wait_time = 15 + index*5"
+		let "wait_time = 50 + index*5"
         	printf "          sleep %s;\n" "$wait_time"
         	printf "          touch /Startup-Order/forwarder-%s;\n" "$index"
         	printf "          /sbin/entrypoint.sh start-service'\n"

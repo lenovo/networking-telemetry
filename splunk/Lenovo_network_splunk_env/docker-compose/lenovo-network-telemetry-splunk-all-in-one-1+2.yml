@@ -27,7 +27,7 @@ services:
       /bin/bash -c '
       rm -fr /Startup-Order/*
       echo Service splunkenterprise  Start;
-      sleep 10;
+      sleep 25;
       echo Service splunkenterprise  Up;
       touch /Startup-Order/splunkenterprise;
       /sbin/entrypoint.sh start-service'
@@ -35,6 +35,7 @@ services:
     ports:
       - "8000:8000"
       - "9997:9997"
+      - "8089:8089"
 
   forwarder-1:
     image: ospost/lenovo-splunk-forwarder:7.0.3
@@ -54,7 +55,7 @@ services:
       /bin/bash -c '
       while [[ ! -f /Startup-Order/splunkenterprise ]]; do sleep 1; done;
       echo Service forwarder-1 Start;
-      sleep 10;
+      sleep 45;
       echo Service forwarder-1 Up;
       touch /Startup-Order/forwarder-1;
       /sbin/entrypoint.sh start-service'
@@ -80,7 +81,7 @@ services:
       /bin/bash -c '
       while [[ ! -f /Startup-Order/splunkenterprise ]]; do sleep 1; done;
       while [[ ! -f /Startup-Order/forwarder-1 ]]; do sleep 1; done;
-      sleep 10;
+      sleep 60;
       echo Service forwarder-2 Up;
       touch /Startup-Order/forwarder-2;
       /sbin/entrypoint.sh start-service'
