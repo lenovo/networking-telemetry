@@ -34,8 +34,10 @@ services:
 
     ports:
       - "8000:8000"
-      - "9997:9997"
       - "8089:8089"
+      - "9997:9997"
+      - "514:10754"
+      - "10755:10755"
 
   forwarder-1:
     image: ospost/lenovo-splunk-forwarder:7.0.3

@@ -115,8 +115,10 @@ function splunkenterprise_compose() {
         printf "          /sbin/entrypoint.sh start-service'\n"
     	printf "        ports: \n"
 	printf "          - \"8000:8000\" \n"
-	printf "          - \"9997:9997\" \n"
 	printf "          - \"8089:8089\" \n"
+	printf "          - \"9997:9997\" \n"
+	printf "          - \"514:10754\" \n"
+	printf "          - \"10755:10755\" \n"
 }
 
 
